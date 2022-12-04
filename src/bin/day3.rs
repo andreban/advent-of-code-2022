@@ -1,3 +1,5 @@
+// Solution for https://adventofcode.com/2022/day/3.
+
 use std::{
     collections::{HashMap, HashSet},
     str::FromStr,

@@ -1,3 +1,4 @@
+// Solution for https://adventofcode.com/2022/day/1.
 fn main() {
     let input = include_str!("day1.txt");
 

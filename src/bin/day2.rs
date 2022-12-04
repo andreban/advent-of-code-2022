@@ -1,3 +1,5 @@
+// Solution for https://adventofcode.com/2022/day/2.
+
 use std::str::FromStr;
 
 #[derive(Debug)]
