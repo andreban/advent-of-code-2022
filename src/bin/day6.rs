@@ -1,6 +1,5 @@
 
 fn is_unique_chars(input: &[char]) -> bool {
-    println!("{:?}", input);
     for i in 0..input.len() {
         for j in 0..input.len() {
             if i != j && input[i] == input[j] {
