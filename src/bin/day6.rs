@@ -1,4 +1,3 @@
-
 fn is_unique_chars(input: &[char]) -> bool {
     for i in 0..input.len() {
         for j in 0..input.len() {

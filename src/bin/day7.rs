@@ -1,4 +1,4 @@
-use std::{str::FromStr, collections::HashMap, process::Command};
+use std::{collections::HashMap, process::Command, str::FromStr};
 
 const SAMPLE_INPUT: &str = r"$ cd /
 $ ls
@@ -64,12 +64,13 @@ impl FromStr for Entry {
         } else if parts[0] == "dir" {
             Ok(Entry::Directory(parts[1].to_string()))
         } else {
-            let size = parts[0].parse::<usize>()
+            let size = parts[0]
+                .parse::<usize>()
                 .map_err(|e| InputParseError(e.to_string()))
                 .unwrap();
             Ok(Entry::File(parts[1].to_string(), size))
         }
-    }    
+    }
 }
 
 #[derive(Debug)]
@@ -82,7 +83,7 @@ enum Node {
 struct FileTree(Node);
 
 impl FileTree {
-    pub fn add_node(&mut self, path: &[String], name:String, new_node: Node) {
+    pub fn add_node(&mut self, path: &[String], name: String, new_node: Node) {
         let mut current_node = &mut self.0;
         for section in path {
             if let Node::Directory(_, directory) = current_node {
@@ -98,7 +99,7 @@ impl FileTree {
         let Node::Directory(dir_name, dir) = node else {
             return 0;
         };
-        
+
         let mut sum = 0;
         for (_, node) in dir.iter() {
             let dir_size = Self::calculate_node_size(node, callback);
@@ -119,10 +120,9 @@ impl FileTree {
         for node in dir.values() {
             total_size += Self::calculate_node_size(node, callback);
         }
-        total_size        
+        total_size
     }
 }
-
 
 fn main() {
     let mut root_node = FileTree(Node::Directory("root".to_string(), HashMap::new()));
@@ -133,57 +133,55 @@ fn main() {
     for line in input.lines() {
         let entry = line.parse::<Entry>().unwrap();
         match entry {
-            Entry::Command(prompt) => {
-                match prompt {
-                    Prompt::Ls => {},
-                    Prompt::Cd(dir_name) => {
-                        if dir_name == ".." {
-                            full_path.pop();
-                        } else {
-                            root_node.add_node(
-                                &full_path, dir_name.clone(),
-                                Node::Directory(dir_name.clone(), HashMap::new()));
-                            full_path.push(dir_name);
-                        }
-                    },
+            Entry::Command(prompt) => match prompt {
+                Prompt::Ls => {}
+                Prompt::Cd(dir_name) => {
+                    if dir_name == ".." {
+                        full_path.pop();
+                    } else {
+                        root_node.add_node(
+                            &full_path,
+                            dir_name.clone(),
+                            Node::Directory(dir_name.clone(), HashMap::new()),
+                        );
+                        full_path.push(dir_name);
+                    }
                 }
             },
             Entry::File(name, size) => {
                 root_node.add_node(&full_path, name.clone(), Node::File(name, size));
             }
-            _ => {}   
+            _ => {}
         }
     }
     // println!("{:#?}", root_node);
 
-
     // Part 1
     println!("--===Part 1===---");
     let mut total_sum = 0;
-    let total_size = root_node.calculate_size(&mut |name, size|{
+    let total_size = root_node.calculate_size(&mut |name, size| {
         println!("{} -> {}", name, size);
         if size < 100000 {
             total_sum += size;
         }
     });
 
-
     // Part 2
     println!("---===Part2===---");
     let amount_free = 70000000 - total_size;
     let amount_to_delete = 30000000 - amount_free;
-    println!("Total Used: {}; Amount Free: {}, Amount to delete: {}", total_size, amount_free, amount_to_delete);
+    println!(
+        "Total Used: {}; Amount Free: {}, Amount to delete: {}",
+        total_size, amount_free, amount_to_delete
+    );
     let mut delete_size = usize::MAX;
-    root_node.calculate_size(&mut |name, size|{
-        if size > amount_to_delete && size < delete_size{
+    root_node.calculate_size(&mut |name, size| {
+        if size > amount_to_delete && size < delete_size {
             delete_size = size;
             println!("{} -> {}", name, size);
         }
     });
-
 }
 
 #[cfg(test)]
-mod tests {
-
-}
+mod tests {}
