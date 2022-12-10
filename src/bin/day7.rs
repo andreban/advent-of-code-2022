@@ -1,4 +1,4 @@
-use std::{collections::HashMap, process::Command, str::FromStr};
+use std::{collections::HashMap, str::FromStr};
 
 const SAMPLE_INPUT: &str = r"$ cd /
 $ ls
@@ -37,7 +37,7 @@ impl FromStr for Prompt {
     type Err = InputParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let parts = s.split(" ").collect::<Vec<_>>();
+        let parts = s.split(' ').collect::<Vec<_>>();
         match parts[1] {
             "cd" => Ok(Self::Cd(parts[2].to_string())),
             "ls" => Ok(Self::Ls),
@@ -57,7 +57,7 @@ impl FromStr for Entry {
     type Err = InputParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let parts = s.split(" ").collect::<Vec<_>>();
+        let parts = s.split(' ').collect::<Vec<_>>();
         if parts[0] == "$" {
             let prompt = s.parse::<Prompt>()?;
             Ok(Entry::Command(prompt))
@@ -108,7 +108,7 @@ impl FileTree {
                 sum += *size;
             }
         }
-        callback(&dir_name, sum);
+        callback(dir_name, sum);
         sum
     }
 

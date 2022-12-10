@@ -78,7 +78,7 @@ pub fn parse_input(input: &str) -> Result<(Stacks, Vec<Move>), InputParseError> 
     // Parse movements.
     let mut moves: Vec<Move> = vec![];
     for line in lines {
-        let parts = line.split(" ").collect::<Vec<_>>();
+        let parts = line.split(' ').collect::<Vec<_>>();
         moves.push(Move {
             from: parts[3].parse().unwrap(),
             to: parts[5].parse().unwrap(),

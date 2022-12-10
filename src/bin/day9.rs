@@ -9,16 +9,10 @@ D 1
 L 5
 R 2";
 
-#[derive(Debug, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy)]
+#[derive(Debug, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy, Default)]
 struct Position {
     x: isize,
     y: isize,
-}
-
-impl Default for Position {
-    fn default() -> Self {
-        Self { x: 0, y: 0 }
-    }
 }
 
 impl Position {
@@ -61,7 +55,7 @@ fn main() {
     // for line in include_str!("day9.txt").lines() {
     for line in SAMPLE_INPUT.lines() {
         println!("{line}");
-        let mut split = line.split(" ");
+        let mut split = line.split(' ');
         let direction: (isize, isize) = match split.next().unwrap() {
             "R" => (1, 0),
             "L" => (-1, 0),
@@ -86,7 +80,7 @@ fn main() {
     let mut tail_positions = HashSet::<Position>::new();
     // for line in include_str!("day9.txt").lines() {
     for line in SAMPLE_INPUT.lines() {
-        let mut split = line.split(" ");
+        let mut split = line.split(' ');
         let (x, y) = match split.next().unwrap() {
             "R" => (1, 0),
             "L" => (-1, 0),

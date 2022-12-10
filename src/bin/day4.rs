@@ -30,13 +30,13 @@ impl FromStr for Range {
     type Err = InputParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut input = s.trim().split("-");
+        let mut input = s.trim().split('-');
 
-        fn next_u8(input: &mut Split<&str>) -> Result<u8, InputParseError> {
+        fn next_u8(input: &mut Split<char>) -> Result<u8, InputParseError> {
             let Some(value) = input.next() else {
                 return Err(InputParseError);  
             };
-            Ok(value.parse::<u8>().map_err(|_err| InputParseError)?)
+            value.parse::<u8>().map_err(|_err| InputParseError)
         }
 
         Ok(Self::new(next_u8(&mut input)?, next_u8(&mut input)?))
@@ -53,7 +53,7 @@ fn main() {
 pub fn parse_input(input: &str) -> Result<Vec<(Range, Range)>, InputParseError> {
     let mut pairs = vec![];
     for line in input.lines() {
-        let ranges = line.trim().split(",").collect::<Vec<&str>>();
+        let ranges = line.trim().split(',').collect::<Vec<&str>>();
         if ranges.len() < 2 {
             return Err(InputParseError);
         }
@@ -64,15 +64,15 @@ pub fn parse_input(input: &str) -> Result<Vec<(Range, Range)>, InputParseError> 
     Ok(pairs)
 }
 
-pub fn count_contained_pairs(pairs: &Vec<(Range, Range)>) -> u32 {
+pub fn count_contained_pairs(pairs: &[(Range, Range)]) -> u32 {
     pairs
-        .into_iter()
-        .filter(|(a, b)| a.contains(&b) || b.contains(&a))
+        .iter()
+        .filter(|(a, b)| a.contains(b) || b.contains(a))
         .count() as u32
 }
 
-pub fn count_overlapping_pairs(pairs: &Vec<(Range, Range)>) -> u32 {
-    pairs.into_iter().filter(|(a, b)| a.overlaps(&b)).count() as u32
+pub fn count_overlapping_pairs(pairs: &[(Range, Range)]) -> u32 {
+    pairs.iter().filter(|(a, b)| a.overlaps(b)).count() as u32
 }
 
 #[cfg(test)]

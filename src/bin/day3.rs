@@ -14,8 +14,8 @@ pub struct Item(char);
 impl Item {
     pub fn value(&self) -> u32 {
         match self {
-            Item(c) if c >= &'a' && c <= &'z' => *c as u32 - 96,
-            Item(c) if c >= &'A' && c <= &'Z' => *c as u32 - 38,
+            Item(c) if (&'a'..=&'z').contains(&c) => *c as u32 - 96,
+            Item(c) if (&'A'..=&'Z').contains(&c) => *c as u32 - 38,
             _ => 0,
         }
     }
@@ -34,7 +34,7 @@ impl Backpack {
         // Using the `find_common_items` generic function.
         find_common_items(&[left_pocket, right_pocket])
             .iter()
-            .map(|i| *i)
+            .copied()
             .next()
 
         // // Using brute force :).
@@ -74,7 +74,7 @@ pub fn compute_sum_of_badges_priorities(backpacks: &[Backpack]) -> u32 {
         ];
 
         // Using the `find_common_items` generic function.
-        if let Some(common_item) = find_common_items(&item_lists).iter().next() {
+        if let Some(common_item) = find_common_items(&item_lists).first() {
             sum += common_item.value();
         }
 
@@ -105,7 +105,7 @@ pub fn find_common_items(item_lists: &[&[Item]]) -> Vec<Item> {
 
     // Transform each list of item into unique lists.
     for item_list in item_lists {
-        let items: HashSet<Item> = item_list.into_iter().map(|i| *i).collect();
+        let items: HashSet<Item> = item_list.iter().copied().collect();
         unique_items.push(items);
     }
 
@@ -113,7 +113,7 @@ pub fn find_common_items(item_lists: &[&[Item]]) -> Vec<Item> {
     // then store in a Map.
     let mut item_counts = HashMap::<Item, u32>::new();
     for item in unique_items.iter().flat_map(|items| items.iter()) {
-        let count = *item_counts.get(&item).unwrap_or(&0);
+        let count = *item_counts.get(item).unwrap_or(&0);
         item_counts.insert(*item, count + 1);
     }
 

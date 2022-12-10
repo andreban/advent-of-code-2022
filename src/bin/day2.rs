@@ -100,7 +100,7 @@ impl FromStr for Round {
     type Err = ParseMatchError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let parts: Vec<&str> = s.split(" ").collect();
+        let parts: Vec<&str> = s.split(' ').collect();
         let player1_hand = parts[0].parse::<HandShape>()?;
         // let player2_hand = parts[1].parse::<HandShape>()?;
 

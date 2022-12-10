@@ -18,7 +18,7 @@ impl FromStr for Command {
             return Ok(Command::Noop);
         }
 
-        let mut split = s.split(" ");
+        let mut split = s.split(' ');
         if split.next().unwrap() == "addx" {
             let value = split
                 .next()
