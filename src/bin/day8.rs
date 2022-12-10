@@ -108,7 +108,7 @@ impl TreeGrid {
             if self.height_at(row, col) >= main_tree_height {
                 break;
             }
-        }   
+        }
         num_trees
     }
 
@@ -120,12 +120,12 @@ impl TreeGrid {
         let main_tree_height = self.height_at(row, col);
         let mut num_trees = 0;
 
-        for row in row+1..self.height {
+        for row in row + 1..self.height {
             num_trees += 1;
             if self.height_at(row, col) >= main_tree_height {
                 break;
             }
-        }   
+        }
         num_trees
     }
 
@@ -139,12 +139,17 @@ impl TreeGrid {
         let mut num_trees = 0;
 
         for col in (0..col).rev() {
-            println!("row: {}, col: {}, height: {}", row, col, self.height_at(row, col));
+            println!(
+                "row: {}, col: {}, height: {}",
+                row,
+                col,
+                self.height_at(row, col)
+            );
             num_trees += 1;
             if self.height_at(row, col) >= main_tree_height {
                 break;
             }
-        }   
+        }
         num_trees
     }
 
@@ -156,12 +161,12 @@ impl TreeGrid {
         let main_tree_height = self.height_at(row, col);
         let mut num_trees = 0;
 
-        for col in col+1..self.height {
+        for col in col + 1..self.height {
             num_trees += 1;
             if self.height_at(row, col) >= main_tree_height {
                 break;
             }
-        }   
+        }
         num_trees
     }
 }

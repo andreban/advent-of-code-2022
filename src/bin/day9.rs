@@ -10,7 +10,10 @@ L 5
 R 2";
 
 #[derive(Debug, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy)]
-struct Position {x: isize, y: isize}
+struct Position {
+    x: isize,
+    y: isize,
+}
 
 impl Default for Position {
     fn default() -> Self {
@@ -29,7 +32,7 @@ impl Position {
         let diff_y = self.y - other.y;
 
         // println!("diffs ({diff_x}, {diff_y})");
-        
+
         if diff_x.abs() > 1 || diff_y.abs() > 1 {
             let move_x = if diff_x != 0 {
                 diff_x / diff_x.abs()
@@ -49,7 +52,7 @@ impl Position {
     }
 }
 
-fn main () {
+fn main() {
     let mut head = Position::default();
     let mut tail = Position::default();
     let mut tail_positions = HashSet::<Position>::new();
@@ -74,7 +77,7 @@ fn main () {
             tail.move_amount(x, y);
             println!("head: {:?}, tail: {:?}", head, tail);
             tail_positions.insert(tail);
-        } 
+        }
     }
     println!("Number tail positions: {}", tail_positions.len());
 
