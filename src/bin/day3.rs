@@ -290,7 +290,7 @@ mod tests {
             &backpacks[2].items as &[Item],
         ];
 
-        let common_item = find_common_items(items).iter().next().unwrap().clone();
+        let common_item = *find_common_items(items).first().unwrap();
         assert_eq!(common_item, Item('r'));
     }
 }
