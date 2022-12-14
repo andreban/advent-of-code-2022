@@ -54,7 +54,12 @@ impl FromStr for Monkey {
             .collect::<Vec<_>>();
 
         // Parse Operation.
-        let parts = lines[2].split('=').next_back().unwrap().split(' ').collect::<Vec<_>>();
+        let parts = lines[2]
+            .split('=')
+            .next_back()
+            .unwrap()
+            .split(' ')
+            .collect::<Vec<_>>();
         let operator = match parts[2] {
             "*" => Operator::Mult,
             "+" => Operator::Sum,
@@ -88,8 +93,7 @@ impl FromStr for Monkey {
             .next_back()
             .ok_or(ParseInputError)?
             .parse::<usize>()
-            .map_err(|_| ParseInputError)?;            
-
+            .map_err(|_| ParseInputError)?;
 
         Ok(Monkey {
             items,
@@ -98,30 +102,29 @@ impl FromStr for Monkey {
             monkey1,
             monkey2,
         })
-    }    
+    }
 }
 
-fn main () {
+fn main() {
     let input = include_str!("day11_sample.txt");
     // let input = include_str!("day11.txt");
 
-    let mut monkeys: Vec<Monkey> = vec![]; 
-    input.split("\r\n\r\n").for_each(|monkey|{
+    let mut monkeys: Vec<Monkey> = vec![];
+    input.split("\r\n\r\n").for_each(|monkey| {
         let monkey: Monkey = monkey.parse().unwrap();
         println!("{:?}", monkey);
         monkeys.push(monkey);
     });
 
-    let div = monkeys.iter().map(|m| m.divisible_by).fold(1_u64, |acc, f|acc * f);
+    let div = monkeys
+        .iter()
+        .map(|m| m.divisible_by)
+        .fold(1_u64, |acc, f| acc * f);
 
     let mut inspections = vec![0_usize; monkeys.len()];
 
     let part2 = false;
-    let iterations = if part2 {
-        10000
-    } else {
-        20
-    };
+    let iterations = if part2 { 10000 } else { 20 };
 
     for round in 1..=iterations {
         // Executes one round.
@@ -146,7 +149,7 @@ fn main () {
         }
 
         if round == 1 || round == 20 || round % 1000 == 0 {
-            println!("Round {}", round);    
+            println!("Round {}", round);
             for (monkey, inspections) in inspections.iter().enumerate() {
                 println!("\tMonkey: {}, Inspections: {}", monkey, inspections);
             }

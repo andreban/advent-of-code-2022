@@ -1,4 +1,4 @@
-use std::{str::FromStr};
+use std::str::FromStr;
 
 #[derive(Debug)]
 pub struct ParseInputError(String);
@@ -75,7 +75,7 @@ impl Default for CRT {
     fn default() -> Self {
         let width = 40;
         let height = 6;
-        Self { 
+        Self {
             pixels: vec!['.'; width * height],
             width,
             height,
@@ -90,7 +90,7 @@ fn main() {
     let mut sum_frequencies = 0;
 
     for line in include_str!("day10.txt").lines() {
-    // for line in include_str!("day10_sample.txt").lines() {
+        // for line in include_str!("day10_sample.txt").lines() {
         let command = line.parse::<Command>().unwrap();
         let (cycles, value) = match command {
             Command::Noop => (1, 0),

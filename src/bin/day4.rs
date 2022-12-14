@@ -34,7 +34,7 @@ impl FromStr for Range {
 
         fn next_u8(input: &mut Split<char>) -> Result<u8, InputParseError> {
             let Some(value) = input.next() else {
-                return Err(InputParseError);  
+                return Err(InputParseError);
             };
             value.parse::<u8>().map_err(|_err| InputParseError)
         }
