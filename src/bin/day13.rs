@@ -124,7 +124,7 @@ impl PartialOrd for Item {
         let left = match self {
             Item::List(v) => v,
             Item::Number(n) => {
-                left_holder = vec![Item::Number(*n)];
+                left_holder.push(Item::Number(*n));
                 &left_holder
             }
         };
@@ -133,7 +133,7 @@ impl PartialOrd for Item {
         let right = match other {
             Item::List(v) => v,
             Item::Number(n) => {
-                right_holder = vec![Item::Number(*n)];
+                right_holder.push(Item::Number(*n));
                 &right_holder
             }
         };
