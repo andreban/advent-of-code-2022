@@ -56,7 +56,7 @@ impl Map {
     pub fn coordinate_at(&self, from: &Coordinate, direction: Direction) -> Option<Coordinate> {
         match direction {
             Direction::Up => {
-                if from.y <= 0 {
+                if from.y == 0 {
                     None
                 } else {
                     Some(Coordinate::new(from.x, from.y - 1))
@@ -72,7 +72,7 @@ impl Map {
             }
 
             Direction::Left => {
-                if from.x <= 0 {
+                if from.x == 0 {
                     None
                 } else {
                     Some(Coordinate::new(from.x - 1, from.y))

@@ -1,4 +1,4 @@
-use std::{str::FromStr, collections::HashSet};
+use std::{collections::HashSet, str::FromStr};
 
 const SAMPLE_INPUT: &str = r"498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9";
@@ -6,7 +6,7 @@ const SAMPLE_INPUT: &str = r"498,4 -> 498,6 -> 496,6
 #[derive(Debug)]
 pub struct InputParseError;
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct Point {
     pub x: u32,
     pub y: u32,
@@ -17,17 +17,19 @@ impl FromStr for Point {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut parts = s.split(',');
-        let x = parts.next()
+        let x = parts
+            .next()
             .ok_or(InputParseError)?
             .parse::<u32>()
             .map_err(|_| InputParseError)?;
 
-        let y = parts.next()
+        let y = parts
+            .next()
             .ok_or(InputParseError)?
             .parse::<u32>()
             .map_err(|_| InputParseError)?;
         Ok(Self { x, y })
-    }   
+    }
 }
 
 fn main() {
@@ -36,7 +38,7 @@ fn main() {
     let mut walls = vec![];
     let (mut min_x, mut max_x) = (u32::MAX, u32::MIN);
     let (mut min_y, mut max_y) = (0, u32::MIN);
-    
+
     for line in input.lines() {
         let mut wall = vec![];
         for split in line.split("->") {
@@ -46,7 +48,7 @@ fn main() {
             min_y = u32::min(min_y, point.y);
             max_y = u32::max(max_y, point.y);
             wall.push(point);
-        } 
+        }
         walls.push(wall);
     }
 
@@ -56,15 +58,15 @@ fn main() {
         let mut current = it.next().unwrap();
         while let Some(next) = it.next() {
             // This bit assumes that when movin between points, it moves either in the X or Y axis,
-            // but never both. We'd need to prioritise which axis to move if that was the case. 
+            // but never both. We'd need to prioritise which axis to move if that was the case.
             let (min_x, max_x) = (u32::min(current.x, next.x), u32::max(current.x, next.x));
             for x in min_x..=max_x {
-                blocks.insert(Point {x, y: current.y});
+                blocks.insert(Point { x, y: current.y });
             }
 
             let (min_y, max_y) = (u32::min(current.y, next.y), u32::max(current.y, next.y));
             for y in min_y..=max_y {
-                blocks.insert(Point {x: current.x, y});
+                blocks.insert(Point { x: current.x, y });
             }
 
             current = next;
@@ -73,7 +75,7 @@ fn main() {
 
     let mut grain_count = 0;
     loop {
-        let mut grain = Point {x: 500, y: 0};
+        let mut grain = Point { x: 500, y: 0 };
 
         let mut moved = true;
         while moved {
@@ -81,23 +83,32 @@ fn main() {
 
             if grain.y == max_y + 1 {
                 blocks.insert(grain);
-                break;     
+                break;
             }
 
             // Can move directly down?
-            let down = Point { x: grain.x, y: grain.y + 1};
+            let down = Point {
+                x: grain.x,
+                y: grain.y + 1,
+            };
             if !blocks.contains(&down) {
                 grain = down;
                 continue;
             }
 
-            let down_left = Point {x: grain.x - 1, y: grain.y + 1};
+            let down_left = Point {
+                x: grain.x - 1,
+                y: grain.y + 1,
+            };
             if !blocks.contains(&down_left) {
                 grain = down_left;
                 continue;
             }
 
-            let down_right = Point {x: grain.x + 1, y: grain.y + 1};
+            let down_right = Point {
+                x: grain.x + 1,
+                y: grain.y + 1,
+            };
             if !blocks.contains(&down_right) {
                 grain = down_right;
                 continue;
@@ -114,10 +125,9 @@ fn main() {
         // }
 
         grain_count += 1;
-        if blocks.contains(&Point {x: 500, y: 0}) {
+        if blocks.contains(&Point { x: 500, y: 0 }) {
             break;
-        } 
+        }
     }
     println!("{:?}", grain_count);
 }
-
