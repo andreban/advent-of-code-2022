@@ -1,4 +1,4 @@
-use std::collections::{HashSet, HashMap};
+use std::collections::{HashMap, HashSet};
 
 use aoc22::Point;
 use lazy_regex::{regex, Lazy, Regex};
@@ -71,7 +71,7 @@ impl Range {
         }
 
         // self and other overlap.
-        if self.overlaps(other) || other.overlaps(self){
+        if self.overlaps(other) || other.overlaps(self) {
             let start = i64::min(self.start, other.start);
             let end = i64::max(self.end, other.end);
             return Some(Range::new(start, end));
@@ -81,7 +81,7 @@ impl Range {
         if self.adjacent(other) {
             let start = i64::min(self.start, other.start);
             let end = i64::max(self.end, other.end);
-            return Some(Range::new(start, end));      
+            return Some(Range::new(start, end));
         }
 
         None
@@ -90,7 +90,7 @@ impl Range {
 
 #[derive(Debug, Clone, Default)]
 pub struct Ranges {
-    pub ranges: Vec<Range>
+    pub ranges: Vec<Range>,
 }
 
 impl Ranges {
@@ -116,18 +116,18 @@ impl Ranges {
                         result.push(r);
                         changed = true;
                         pos += 2;
-                    },
+                    }
                     None => {
                         result.push(self.ranges[pos]);
                         pos += 1;
-                    },
+                    }
                 }
             }
             self.ranges = result;
             if !changed {
                 break;
             }
-        }       
+        }
     }
 
     pub fn extend(&mut self, new: Range) {
@@ -136,7 +136,11 @@ impl Ranges {
     }
 }
 
-fn compute_valid_points(sensor_beacon_map: &HashMap<Point, Point>, beacons: &HashSet<Point>, target_y: i64) -> HashSet<Point> {
+fn compute_valid_points(
+    sensor_beacon_map: &HashMap<Point, Point>,
+    beacons: &HashSet<Point>,
+    target_y: i64,
+) -> HashSet<Point> {
     let mut valid_points = HashSet::new();
     for (sensor, beacon) in sensor_beacon_map {
         let beacon_distance = sensor.manhattan_distance(beacon);
@@ -218,7 +222,6 @@ fn main() {
     println!("range: {:?}, y: {}", r, y);
     let freq = (r.ranges[0].end + 1) * 4000000 + y as i64;
     println!("Part 2: {}", freq);
-    
 
     // println!("{}", sensors.len());
     // for y in 0..=part_2_limit {
@@ -230,7 +233,7 @@ fn main() {
     //         let point = Point::new(x, y);
 
     //         let mut in_range = false;
-    //         for sensor in &sensors {    
+    //         for sensor in &sensors {
     //             if sensor.contains(&point) {
     //                 in_range = true;
     //                 // println!("{:?} contains {:?}", sensor, point);
@@ -253,7 +256,7 @@ mod tests {
     fn adds_one_range() {
         let mut ranges = Ranges::default();
         ranges.extend(Range::new(-1, 10));
-        assert_eq!(ranges.ranges.len(), 1); 
+        assert_eq!(ranges.ranges.len(), 1);
     }
 
     #[test]
